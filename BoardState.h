@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 const int SIZE = 8;
@@ -18,14 +19,15 @@ class BoardState {
 public:
     explicit BoardState(BoardState *pState);
     BoardState();
-    vector<BoardState*>* getAllBoards();
-    vector<BoardState*>* getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state);
+    unsigned long int getAllBoards();
+    void getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  long int shipCount[SIZE][SIZE], int startX, int startY);
     bool validSpot(int x, int y, int shipSize, bool vert);
     string toString();
 
 
-
+    void setEmpty(int x, int y);
     void markShip(int x, int y, int size, BoardState *state, bool vert);
+
 };
 
 

@@ -22,35 +22,33 @@ BoardState::BoardState(){
     }
 }
 //empty[row][col]
-vector<BoardState*>* BoardState::getAllBoards(){
+unsigned long int BoardState::getAllBoards(){
     vector<int> shipSizes = {2, 2, 2, 3, 3, 3, 4};
-    int shipCounts[SIZE][SIZE];
-
+    long int shipCounts[SIZE][SIZE];
+    for(int i = 0; i<SIZE; i++){
+        for(int j = 0; j<SIZE; j++){
+            shipCounts[i][j] = 0;
+        }
+    }
+    auto* stateCopy = new BoardState(this);
+    getAllBoardsHelper(shipSizes, stateCopy, shipCounts, 0, 0);
     for (auto & shipCount : shipCounts){
-        for (int & j : shipCount){
-            j = 0;
+        for (long int & j : shipCount){
+            //cout<< j << " ";
         }
-    }
-    vector<BoardState*>* boardStates = getAllBoardsHelper(shipSizes, this);
-    for(BoardState* state: *boardStates){
-        for(int i = 0; i<SIZE; i++){
-            for(int j = 0; j<SIZE; j++){
-                shipCounts[i][j] += state->ships[i][j];
-            }
-        }
+        //cout << endl;
     }
 
-    for (auto & shipCount : shipCounts){
-        for (int & j : shipCount){
-            cout<< j << " ";
+    unsigned long int total = 0;
+    for(int i = 0; i<SIZE; i++){
+        for(int j = 0; j<SIZE; j++){
+            total+= shipCounts[i][j];
         }
-        cout << endl;
     }
-
-    return nullptr;
+    return total;
 }
 
-vector<BoardState*>* BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state){
+void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  long int shipCount[SIZE][SIZE], int startX, int startY){
     /*for(int x :shipSizes){
         cout << x;
     }
@@ -58,48 +56,46 @@ vector<BoardState*>* BoardState::getAllBoardsHelper(const vector<int>& shipSizes
 
     cout << state->toString() << endl;*/
     if(shipSizes.empty()){
-        auto* end = new vector<BoardState*>;
-        end->push_back(state);
         //cout << "AAA" << endl << (state->toString()) << endl;
-        return end;
+        for(int i = 0; i<SIZE; i++){
+            for(int j = 0; j<SIZE; j++){
+                shipCount[i][j] += state->ships[i][j];
+            }
+        }
+        delete state;
+        return;
     }
     vector<int> newList = shipSizes;
-    auto* output = new vector<BoardState*>();
     int size = newList.back();
+    int only = count(newList.begin(), newList.end(), size) == 1;
     newList.pop_back();
-    for(int i = 0; i<SIZE; i++){
-        for(int j = 0; j<SIZE; j++){
+
+    int thing = startX;
+    for(int i = startY; i<SIZE; i++){
+        for(int j = thing; j<SIZE; j++){
 
             if(size == 4){
-                cout<<"("<<i <<"," << j << ")";
+                //cout<<"("<<j <<"," << i << ")";
             }
             if (state->validSpot(j, i,size, false) ){
                 //call allboardshelper with new state
                 auto* newState = new BoardState(state);
                 markShip(j, i, size, newState, false);
-                vector<BoardState*>* completed = getAllBoardsHelper(newList, newState);
-                output->reserve( output->size() + completed->size() );
-                output->insert( output->end(), completed->begin(), completed->end() );
-                delete completed;
+                if(only){getAllBoardsHelper(newList, newState, shipCount, 0, 0);}
+                else{getAllBoardsHelper(newList, newState, shipCount, j, i);}
+
             }
             if (state->validSpot(j, i,size, true) ){
                 //call allboardshelper with new state
                 auto* newState = new BoardState(state);
                 markShip(j, i, size, newState, true);
-
-                //REMOVE
-                vector<BoardState*>* completed = getAllBoardsHelper(newList, newState);
-
-                //VERY COSTLY
-                output->reserve( output->size() + completed->size() );
-                output->insert( output->end(), completed->begin(), completed->end() );
-
-                delete completed;
+                if(only){getAllBoardsHelper(newList, newState, shipCount, 0,0);}
+                else{getAllBoardsHelper(newList, newState, shipCount, j,i);}
             }
         }
+        thing = 0;
     }
     delete state;
-    return output;
 }
 
 bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
@@ -169,3 +165,9 @@ string BoardState::toString() {
     }
     return output;
 }
+
+void BoardState::setEmpty(int x, int y) {
+    empty[y][x] = true;
+}
+
+

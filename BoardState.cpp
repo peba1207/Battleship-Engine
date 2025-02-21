@@ -114,6 +114,7 @@ void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* st
 }
 
 bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
+    bool allX = true;
     if(!vert){
         if(x+shipSize>SIZE){return false;}
 
@@ -139,10 +140,11 @@ bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
 
 
         for(int i = 0; i<shipSize; i++){
-            if(empty[y][x+i]){return false;}
+            if(empty[y][x+i] && !ships[y][x+i]){return false;}
+            if(!empty[y][x+i]){allX = false;}
             if((y>0 && ships[y-1][x+i]) || (y<SIZE-1 && ships[y+1][x+i])){return false;}
         }
-
+        if(allX){return false;}
         return true;
     } else{
 
@@ -168,9 +170,11 @@ bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
         if(y+shipSize>SIZE){return false;}
 
         for(int i = 0; i<shipSize; i++) {
-            if (empty[y + i][x]) { return false; }
+            if (empty[y+i][x] && !ships[y+i][x]) { return false; }
+            if(!empty[y+i][x]){allX = false;}
             if((x>0 && ships[y+i][x-1]) || (x<SIZE-1 && ships[y+i][x+1])){return false;}
         }
+        if(allX){return false;}
         return true;
     }
 

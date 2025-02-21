@@ -12,6 +12,7 @@
 
 using namespace std;
 const int SIZE = 8;
+const int SHIPTILES = 19;
 class BoardState {
     bool empty[SIZE][SIZE]{};
     bool ships[SIZE][SIZE]{};
@@ -19,8 +20,8 @@ class BoardState {
 public:
     explicit BoardState(BoardState *pState);
     BoardState();
-    unsigned long int getAllBoards();
-    void getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  long int shipCount[SIZE][SIZE], int startX, int startY);
+    unsigned long long int getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]);
+    void getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
     bool validSpot(int x, int y, int shipSize, bool vert);
     string toString();
 
@@ -28,6 +29,7 @@ public:
     void setEmpty(int x, int y);
     void markShip(int x, int y, int size, BoardState *state, bool vert);
 
+    void setHit(int x, int y);
 };
 
 

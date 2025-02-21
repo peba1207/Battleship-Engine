@@ -22,9 +22,8 @@ BoardState::BoardState(){
     }
 }
 //empty[row][col]
-unsigned long int BoardState::getAllBoards(){
-    vector<int> shipSizes = {2, 2, 2, 3, 3, 3, 4};
-    long int shipCounts[SIZE][SIZE];
+unsigned long long int BoardState::getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]){
+    vector<int> shipSizes = {2,2,2 ,3,3,3,4};
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
             shipCounts[i][j] = 0;
@@ -32,23 +31,30 @@ unsigned long int BoardState::getAllBoards(){
     }
     auto* stateCopy = new BoardState(this);
     getAllBoardsHelper(shipSizes, stateCopy, shipCounts, 0, 0);
-    for (auto & shipCount : shipCounts){
-        for (long int & j : shipCount){
-            //cout<< j << " ";
+    //cout << endl;
+    /*unsigned long long int max = 0;
+    int maxX;
+    int maxY;
+    for (int i = 0; i<SIZE; i++){
+        for (int j = 0; j<SIZE; j++){
+            cout<< shipCounts[i][j];
+            if(j!=SIZE-1){cout<<", ";}
+            if(shipCounts[i][j]>max && !empty[i][j]){max = shipCounts[i][j]; maxX = j; maxY = i;}
         }
-        //cout << endl;
+        cout << endl;
     }
-
-    unsigned long int total = 0;
+    cout << "Most likely: (" << maxX << ", " << maxY << ")" << endl;
+*/
+    unsigned long long int total = 0;
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
             total+= shipCounts[i][j];
         }
     }
-    return total;
+    return total/SHIPTILES;
 }
 
-void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  long int shipCount[SIZE][SIZE], int startX, int startY){
+void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY){
     /*for(int x :shipSizes){
         cout << x;
     }
@@ -57,6 +63,15 @@ void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* st
     cout << state->toString() << endl;*/
     if(shipSizes.empty()){
         //cout << "AAA" << endl << (state->toString()) << endl;
+        int numShipTiles = 0;
+        for(int i = 0; i<SIZE; i++){
+            for(int j = 0; j<SIZE; j++){
+                numShipTiles += state->ships[i][j];
+            }
+        }
+        if(numShipTiles!=SHIPTILES){
+            //cout << "BBB" << endl << (state->toString()) << endl;
+            delete state;return;}
         for(int i = 0; i<SIZE; i++){
             for(int j = 0; j<SIZE; j++){
                 shipCount[i][j] += state->ships[i][j];
@@ -74,9 +89,9 @@ void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* st
     for(int i = startY; i<SIZE; i++){
         for(int j = thing; j<SIZE; j++){
 
-            if(size == 4){
-                //cout<<"("<<j <<"," << i << ")";
-            }
+            /*if(size == 4){
+                cout<<"("<<j <<"," << i << ")";
+            }*/
             if (state->validSpot(j, i,size, false) ){
                 //call allboardshelper with new state
                 auto* newState = new BoardState(state);
@@ -100,18 +115,61 @@ void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* st
 
 bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
     if(!vert){
-
         if(x+shipSize>SIZE){return false;}
+
+        if(x>0){
+            if(y>0){
+                if(ships[y-1][x-1]){return false;}
+            }
+            if(ships[y][x-1]){return false;}
+            if(y<SIZE-1){
+                if(ships[y+1][x-1]){return false;}
+            }
+        }
+        //y+size<SIZE
+        if(x+shipSize<SIZE){
+            if(y>0){
+                if(ships[y-1][x+shipSize]){return false;}
+            }
+            if(ships[y][x+shipSize]){return false;}
+            if(y<SIZE-1){
+                if(ships[y+1][x+shipSize]){return false;}
+            }
+        }
+
+
         for(int i = 0; i<shipSize; i++){
             if(empty[y][x+i]){return false;}
-
+            if((y>0 && ships[y-1][x+i]) || (y<SIZE-1 && ships[y+1][x+i])){return false;}
         }
+
         return true;
     } else{
+
+        if(y>0){
+            if(x>0){
+                if(ships[y-1][x-1]){return false;}
+            }
+            if(ships[y-1][x]){return false;}
+            if(x<SIZE-1){
+                if(ships[y-1][x+1]){return false;}
+            }
+        }
+        if(y+shipSize<SIZE){
+            if(x>0){
+                if(ships[y+shipSize][x-1]){return false;}
+            }
+            if(ships[y+shipSize][x]){return false;}
+            if(x<SIZE-1){
+                if(ships[y+shipSize][x+1]){return false;}
+            }
+        }
+
         if(y+shipSize>SIZE){return false;}
 
         for(int i = 0; i<shipSize; i++) {
             if (empty[y + i][x]) { return false; }
+            if((x>0 && ships[y+i][x-1]) || (x<SIZE-1 && ships[y+i][x+1])){return false;}
         }
         return true;
     }
@@ -169,5 +227,7 @@ string BoardState::toString() {
 void BoardState::setEmpty(int x, int y) {
     empty[y][x] = true;
 }
-
+void BoardState::setHit(int x, int y) {
+    ships[y][x] = true;
+}
 

@@ -23,7 +23,7 @@ BoardState::BoardState(){
 }
 //empty[row][col]
 unsigned long long int BoardState::getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]){
-    vector<int> shipSizes = {2,2,2 ,3,3,3,4};
+    vector<int> shipSizes = {2 ,3,3,3,4};
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
             shipCounts[i][j] = 0;
@@ -215,11 +215,11 @@ string BoardState::toString() {
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
             if(ships[i][j]){
-                output += "x";
+                output += "x ";
             }else if(empty[i][j]){
-                output += "o";
+                output += "o ";
             }else{
-                output += ".";
+                output += ". ";
             }
 
         }

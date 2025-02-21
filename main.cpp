@@ -45,25 +45,98 @@ double findExpectedEntropy(int x, int y, BoardState * state, double pHit) {
 int main() {
     std::cout << "Hello, World!" << std::endl;
     auto *test = new BoardState();
+    //1
     test->setHit(1,0);
     test->setEmpty(1,0);
 
+    //2
     test->setEmpty(6,0);
 
+    //3
     test->setEmpty(5,1);
 
+    //4
     test->setEmpty(5,4);
 
+    //5
     test->setEmpty(2,4);
 
+    //6
     test->setHit(7,6);
     test->setEmpty(7,6);
 
+    //7
     test->setHit(5,6);
     test->setEmpty(5,6);
 
-   // test->setEmpty(6,6);
+    //8
+   test->setEmpty(6,6);
 
+   //9
+    test->setHit(7,1);
+    test->setEmpty(7,1);
+
+    //10
+    test->setEmpty(4,6);
+
+    //11
+    test->markShip(1,0,2, test, true);
+
+    //12
+    test->setEmpty(1,5);
+
+    //13
+    test->setHit(2,6);
+    test->setEmpty(2,6);
+
+    //14
+    test->setEmpty(1,6);
+
+    //15
+    test->setEmpty(3,2);
+
+    //16
+    test->setEmpty(4,2);
+
+    //17
+    test->setEmpty(4,0);
+    test->setHit(4,0);
+
+    //18
+    test->setEmpty(0,5);
+    test->setHit(0,5);
+
+    //19
+    test->setEmpty(0,7);
+
+    //20
+    test->setEmpty(4,1);
+
+    //21
+    test->markShip(2,6, 2, test,false);
+
+    //22
+    test->setEmpty(7,3);
+
+    //23
+    test->setEmpty(0,3);
+    test->setHit(0,3);
+
+    //24
+    test->setEmpty(7,4);
+    test->setHit(7,4);
+
+    //25
+    test->setEmpty(0,6);
+    test->setHit(0,6);
+
+    //26
+    test->setEmpty(3,0);
+    test->setHit(3,0);
+
+    //27
+    test->setEmpty(7,0);
+    cout<<test->toString();
     unsigned long long int shipCounts[SIZE][SIZE];
     double expectedEntropy[SIZE][SIZE];
     unsigned long long int total = test->getAllBoards(shipCounts);

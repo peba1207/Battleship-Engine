@@ -13,6 +13,7 @@ for (int j = 0; j<SIZE; j++){
 ships[i][j] = pState->ships[i][j];
 }
 }
+shipSizes = pState->shipSizes;
 }
 
 BoardState::BoardState(BoardState *pState, vector<int> shipSizes) {

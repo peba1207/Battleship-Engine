@@ -65,8 +65,8 @@ int main() {
     test->setRevealed(4,0);
     test->setHit(4,0);
 
-    test->setRevealed(6,2);
-    test->setHit(6,2);
+//    test->setRevealed(6,2);
+//    test->setHit(6,2);
 
     cout<< test->toString();
     unsigned long long int shipCounts[SIZE][SIZE];
@@ -95,7 +95,7 @@ int main() {
     }
 
     BoardCalculations::printDistribution(expectedEntropy);
-    //BoardCalculations::printDistribution(shipCounts);
+    BoardCalculations::printDistribution(shipCounts);
 
     cout << "Min: " << min << " at (" << minX << ", " << minY << ")";
     delete test;

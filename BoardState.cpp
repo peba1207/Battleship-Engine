@@ -3,6 +3,8 @@
 //
 
 #include "BoardState.h"
+
+#include <utility>
 using namespace std;
 BoardState::BoardState(BoardState *pState) {
 for (int i = 0; i<SIZE; i++){
@@ -11,6 +13,18 @@ for (int j = 0; j<SIZE; j++){
 ships[i][j] = pState->ships[i][j];
 }
 }
+}
+
+BoardState::BoardState(BoardState *pState, vector<int> shipSizes) {
+    for (int i = 0; i<SIZE; i++){
+        for (int j = 0; j<SIZE; j++){
+            revealed[i][j] = pState->revealed[i][j];
+            ships[i][j] = pState->ships[i][j];
+        }
+    }
+
+    this->shipSizes = shipSizes;
+
 }
 
 BoardState::BoardState(){
@@ -23,14 +37,14 @@ BoardState::BoardState(){
 }
 //revealed[row][col]
 unsigned long long int BoardState::getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]){
-    vector<int> shipSizes = {2,3};
+    this->shipSizes = {2,3};
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
             shipCounts[i][j] = 0;
         }
     }
-    auto* stateCopy = new BoardState(this);
-    getAllBoardsHelper(shipSizes, stateCopy, shipCounts, 0, 0);
+    auto* stateCopy = new BoardState(this, this->shipSizes);
+    getAllBoardsHelper(stateCopy, shipCounts, 0, 0);
     //cout << endl;
     /*unsigned long long int max = 0;
     int maxX;
@@ -54,9 +68,9 @@ unsigned long long int BoardState::getAllBoards(unsigned long long int shipCount
     return total/SHIPTILES;
 }
 
-void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY){
+void BoardState::getAllBoardsHelper(BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY){
     //base case: Tallies up ship positions if all ships are placed
-    if(shipSizes.empty()){
+    if(state->shipSizes.empty()){
         int numShipTiles = 0;
         for(int i = 0; i<SIZE; i++){
             for(int j = 0; j<SIZE; j++){
@@ -75,7 +89,7 @@ void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* st
     }
 
 
-    vector<int> newList = shipSizes;
+    vector<int> newList = state->shipSizes;
     int size = newList.back();
 
     //checks if there's only one ship of size "Size"
@@ -93,12 +107,12 @@ void BoardState::getAllBoardsHelper(const vector<int>& shipSizes, BoardState* st
             for(bool vert : {false, true}) {
                 if (state->validSpot(j, i, size, vert)) {
                     //call allboardshelper with new state
-                    auto *newState = new BoardState(state);
+                    auto *newState = new BoardState(state, newList);
                     markShip(j, i, size, newState, vert);
 
                     //
-                    if (only) { getAllBoardsHelper(newList, newState, shipCount, 0, 0); }
-                    else { getAllBoardsHelper(newList, newState, shipCount, j, i); }
+                    if (only) { getAllBoardsHelper(newState, shipCount, 0, 0); }
+                    else { getAllBoardsHelper(newState, shipCount, j, i); }
 
                 }
             }
@@ -229,4 +243,6 @@ void BoardState::setRevealed(int x, int y) {
 void BoardState::setHit(int x, int y) {
     ships[y][x] = true;
 }
+
+
 

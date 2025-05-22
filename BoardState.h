@@ -17,10 +17,13 @@ class BoardState {
 public:
     bool revealed[SIZE][SIZE];
     bool ships[SIZE][SIZE];
+    vector<int> shipSizes;
     explicit BoardState(BoardState *pState);
+    explicit BoardState(BoardState *pState, vector<int> shipSizes);
+
     BoardState();
     unsigned long long int getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]);
-    void getAllBoardsHelper(const vector<int>& shipSizes, BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
+    void getAllBoardsHelper(BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
     bool validSpot(int x, int y, int shipSize, bool vert);
     string toString();
 

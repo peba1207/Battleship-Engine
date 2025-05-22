@@ -62,8 +62,7 @@ int main() {
 
     test->setRevealed(2,0);
 
-    test->setRevealed(4,0);
-    test->setHit(4,0);
+    test->markShip(3,0,2,test,false);
 
 //    test->setRevealed(6,2);
 //    test->setHit(6,2);
@@ -95,6 +94,7 @@ int main() {
     }
 
     BoardCalculations::printDistribution(expectedEntropy);
+    cout << endl;
     BoardCalculations::printDistribution(shipCounts);
 
     cout << "Min: " << min << " at (" << minX << ", " << minY << ")";

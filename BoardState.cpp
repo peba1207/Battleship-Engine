@@ -34,10 +34,11 @@ BoardState::BoardState(){
             ships[i][j] = false;
         }
     }
+
+    shipSizes = {2, 2, 2, 3, 3, 3, 4};
 }
 //revealed[row][col]
 unsigned long long int BoardState::getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]){
-    this->shipSizes = {2,3};
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
             shipCounts[i][j] = 0;
@@ -94,16 +95,11 @@ void BoardState::getAllBoardsHelper(BoardState* state,  unsigned long long int s
 
     //checks if there's only one ship of size "Size"
     int only = count(newList.begin(), newList.end(), size) == 1;
-    newList.pop_back();
 
     //Iterates through the board placing ship of size "size"
     int thing = startX;
     for(int i = startY; i<SIZE; i++){
         for(int j = thing; j<SIZE; j++){
-
-            /*if(size == 4){
-                cout<<"("<<j <<"," << i << ")";
-            }*/
             for(bool vert : {false, true}) {
                 if (state->validSpot(j, i, size, vert)) {
                     //call allboardshelper with new state
@@ -190,6 +186,7 @@ bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
 }
 
 void BoardState::markShip(int x, int y, int size, BoardState* state, bool vert) {
+    state->shipSizes.erase(find(state->shipSizes.begin(),state->shipSizes.end(),size));
     int i = 0;
     int max = size;
     if(!vert) {

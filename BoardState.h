@@ -14,10 +14,9 @@ using namespace std;
 const int SIZE = 8;
 const int SHIPTILES = 19;
 class BoardState {
-    bool empty[SIZE][SIZE]{};
-    bool ships[SIZE][SIZE]{};
-
 public:
+    bool revealed[SIZE][SIZE];
+    bool ships[SIZE][SIZE];
     explicit BoardState(BoardState *pState);
     BoardState();
     unsigned long long int getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]);
@@ -26,7 +25,7 @@ public:
     string toString();
 
 
-    void setEmpty(int x, int y);
+    void setRevealed(int x, int y);
     void markShip(int x, int y, int size, BoardState *state, bool vert);
 
     void setHit(int x, int y);

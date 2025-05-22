@@ -61,6 +61,12 @@ build CMakeFiles/battleship.dir/BoardState.cpp.obj: CXX_COMPILER__battleship_uns
   OBJECT_DIR = CMakeFiles\battleship.dir
   OBJECT_FILE_DIR = CMakeFiles\battleship.dir
 
+build CMakeFiles/battleship.dir/BoardCalculations.cpp.obj: CXX_COMPILER__battleship_unscanned_Debug C$:/Users/peyto/CLionProjects/battleship/BoardCalculations.cpp || cmake_object_order_depends_target_battleship
+  DEP_FILE = CMakeFiles\battleship.dir\BoardCalculations.cpp.obj.d
+  FLAGS = -Ofast -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\battleship.dir
+  OBJECT_FILE_DIR = CMakeFiles\battleship.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target battleship
@@ -69,7 +75,7 @@ build CMakeFiles/battleship.dir/BoardState.cpp.obj: CXX_COMPILER__battleship_uns
 #############################################
 # Link the executable battleship.exe
 
-build battleship.exe: CXX_EXECUTABLE_LINKER__battleship_Debug CMakeFiles/battleship.dir/main.cpp.obj CMakeFiles/battleship.dir/BoardState.cpp.obj
+build battleship.exe: CXX_EXECUTABLE_LINKER__battleship_Debug CMakeFiles/battleship.dir/main.cpp.obj CMakeFiles/battleship.dir/BoardState.cpp.obj CMakeFiles/battleship.dir/BoardCalculations.cpp.obj
   FLAGS = -Ofast -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\battleship.dir

@@ -5,5 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(battleship main.cpp
         BoardState.cpp
-        BoardState.h)
+        BoardState.h
+        BoardCalculations.cpp
+        BoardCalculations.h)
 set(CMAKE_CXX_FLAGS "-Ofast")

@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
+import cpp.StateController
+import cpp.GameGridController
 
 Window {
     width: 1000
@@ -71,12 +73,19 @@ Window {
                 ControlButton{
                     Layout.fillWidth: true
                     text: "hit"
+                    onClicked: StateController.setHit(GameGridController.selectedRow, GameGridController.selectedCol)
                 }
                 ControlButton{
                     Layout.fillWidth: true
                     text: "miss"
+                    onClicked: StateController.setEmpty(GameGridController.selectedRow, GameGridController.selectedCol)
                 }
 
+                ControlButton{
+                    Layout.fillWidth: true
+                    text: "clear"
+                    onClicked: StateController.clearTile(GameGridController.selectedRow, GameGridController.selectedCol)
+                }
             }
         }
     }

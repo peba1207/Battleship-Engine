@@ -10,7 +10,7 @@ class GameGridController : public QObject
     Q_PROPERTY(int selectedRow READ selectedRow WRITE setSelectedRow NOTIFY rowChanged)
 
 public:
-    explicit GameGridController(QObject *parent = nullptr);
+    explicit GameGridController(QObject *parent = nullptr, BoardState* state = nullptr);
 
     int selectedCol() const;
     void setSelectedCol(int newSelectedCol);
@@ -19,10 +19,13 @@ public:
     void setSelectedRow(int newSelectedRow);
 
 public slots:
+    bool isHit(int row, int column);
+    bool isMiss(int row, int column);
 
 signals:
     void colChanged();
     void rowChanged();
+    void stateChanged();
 
 private:
     int m_selectedCol = 0;

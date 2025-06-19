@@ -1,5 +1,7 @@
 import QtQuick
 import cpp.GameGridController
+import cpp.StateController
+
 Item{
     id: root
     required property color baseColor
@@ -11,7 +13,25 @@ Item{
     height: size
 
 
+    Connections{
+        target: StateController
+        function onStateChanged(){
+            if(GameGridController.isHit(rowNum, colNum)){
+                baseColor = "pink"
+                img.source = "images/explosion.png"
+            }else if(GameGridController.isMiss(rowNum, colNum)){
+                baseColor = "lightblue"
+                img.source = "images/x.png"
+
+            } else {
+                baseColor = "lightgray"
+                img.source = ""
+            }
+        }
+    }
+
     Rectangle {
+        id: box
         anchors.fill: parent
 
         color: if(selected){
@@ -22,6 +42,14 @@ Item{
                } else {
                    baseColor
                }
+        Image {
+            id: img
+            anchors{
+                fill: parent
+                margins: 5
+            }
+
+        }
     }
 
     MouseArea{
@@ -36,4 +64,6 @@ Item{
 
         }
     }
+
+
 }

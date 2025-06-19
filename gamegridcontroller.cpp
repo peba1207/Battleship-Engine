@@ -1,9 +1,9 @@
 #include "gamegridcontroller.h"
 
-GameGridController::GameGridController(QObject *parent)
+GameGridController::GameGridController(QObject *parent, BoardState* state)
     : QObject{parent}
 {
-    state = new BoardState();
+    this->state = state;
 }
 
 int GameGridController::selectedCol() const
@@ -30,4 +30,15 @@ void GameGridController::setSelectedRow(int newSelectedRow)
         return;
     m_selectedRow = newSelectedRow;
     emit rowChanged();
+    emit stateChanged();
+}
+
+bool GameGridController::isHit(int row, int column)
+{
+    return state->ships[row][column];
+}
+
+bool GameGridController::isMiss(int row, int column)
+{
+    return state->revealed[row][column] && !state->ships[row][column];
 }

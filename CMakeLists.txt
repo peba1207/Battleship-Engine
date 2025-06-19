@@ -22,6 +22,11 @@ qt_add_qml_module(appbattleship
     SOURCES BoardState.cpp
     SOURCES BoardState.h
     QML_FILES ControlButton.qml
+    SOURCES statecontroller.h statecontroller.cpp
+
+    RESOURCES
+    images/explosion.png
+    images/x.png
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

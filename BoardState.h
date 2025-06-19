@@ -22,14 +22,12 @@ public:
     explicit BoardState(BoardState *pState, vector<int> shipSizes);
 
     BoardState();
-    unsigned long long int getAllBoards(unsigned long long int shipCounts[SIZE][SIZE]);
-    void getAllBoardsHelper(BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
     bool validSpot(int x, int y, int shipSize, bool vert);
     string toString();
 
 
     void setRevealed(int x, int y);
-    void markShip(int x, int y, int size, BoardState *state, bool vert);
+    static void markShip(int x, int y, int size, BoardState *state, bool vert);
 
     void setHit(int x, int y);
 };

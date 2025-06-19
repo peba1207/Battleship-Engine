@@ -20,6 +20,10 @@ public:
     static void printDistribution(double distribution[SIZE][SIZE]);
 
     static void printDistribution(unsigned long long int (*distribution)[SIZE]);
+
+    static unsigned long long int getAllBoards(BoardState* state, unsigned long long int shipCounts[SIZE][SIZE]);
+private:
+    static void getAllBoardsHelper(BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
 };
 
 #endif //BATTLESHIP_BOARDCALCULATIONS_H

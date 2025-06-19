@@ -19,6 +19,9 @@ qt_add_qml_module(appbattleship
     QML_FILES Main.qml
     QML_FILES Tile.qml
     SOURCES gamegridcontroller.h gamegridcontroller.cpp
+    SOURCES BoardState.cpp
+    SOURCES BoardState.h
+    QML_FILES ControlButton.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

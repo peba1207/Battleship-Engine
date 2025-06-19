@@ -3,7 +3,7 @@
 GameGridController::GameGridController(QObject *parent)
     : QObject{parent}
 {
-
+    state = new BoardState();
 }
 
 int GameGridController::selectedCol() const

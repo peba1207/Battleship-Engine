@@ -1,30 +1,83 @@
 import QtQuick
 import QtQuick.Window
+import QtQuick.Layouts
 
 Window {
-    width: 640
-    height: 480
+    width: 1000
+    height: 720
     visible: true
     title: qsTr("Hello World")
-    Grid{
-        rows: 8
-        columns: 8
-        spacing: 2
+    Text{
+        id: title
+        text: "Battleship tools"
+    }
+    Rectangle{
+        width: 376
         anchors{
-            fill: parent
+            top: title.bottom
+            bottom:parent.bottom
             margins: 10
+            left: parent.left
         }
-        Repeater {
-                model: 64
-                Tile{
-                    required property int index
-                    baseColor:"lightgray"
-                    size: 40
-                    colNum: index%8
-                    rowNum: index/8
+
+        color: "gray"
+
+        Rectangle{
+            id: gridbox
+            color: "black"
+            anchors{
+                centerIn: parent
+                margins: 10
+            }
+            width:356
+            height:356
+
+            Grid {
+                rows: 8
+                columns: 8
+                spacing: 2
+                anchors{
+                    fill: parent
+                    margins: 10
+                }
+                Repeater {
+                    model: 64
+                    Tile{
+                        required property int index
+                        baseColor:"lightgray"
+                        size: 40
+                        colNum: index%8
+                        rowNum: index/8
+                    }
                 }
             }
+        }
+
+        Rectangle{
+            anchors {
+                top: gridbox.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right:parent.right
+                margins: 20
+            }
+            color: "white"
+            RowLayout{
+                anchors{
+                    centerIn: parent
+                    fill: parent
+                    margins: 10
+                }
+                ControlButton{
+                    Layout.fillWidth: true
+                    text: "hit"
+                }
+                ControlButton{
+                    Layout.fillWidth: true
+                    text: "miss"
+                }
+
+            }
+        }
     }
-
-
 }

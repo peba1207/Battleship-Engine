@@ -2,7 +2,7 @@
 #define GAMEGRIDCONTROLLER_H
 
 #include <QObject>
-
+#include "BoardState.h"
 class GameGridController : public QObject
 {
     Q_OBJECT
@@ -27,6 +27,7 @@ signals:
 private:
     int m_selectedCol = 0;
     int m_selectedRow = 0;
+    BoardState* state;
 };
 
 #endif // GAMEGRIDCONTROLLER_H

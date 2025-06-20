@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include "gamegridcontroller.h"
 #include "statecontroller.h"
+#include "heatmapcontroller.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -11,9 +12,11 @@ int main(int argc, char *argv[])
 
     GameGridController * gameGridController = new GameGridController(&app, state);
     StateController * stateController = new StateController(&app, state);
+    HeatmapController * heatmapController = new HeatmapController(&app, state);
 
     qmlRegisterSingletonInstance("cpp.GameGridController", 1, 0, "GameGridController", gameGridController);
     qmlRegisterSingletonInstance("cpp.StateController", 1, 0, "StateController", stateController);
+    qmlRegisterSingletonInstance("cpp.HeatmapController", 1, 0, "HeatmapController", heatmapController);
 
     const QUrl url(u"qrc:/battleship/Main.qml"_qs);
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,

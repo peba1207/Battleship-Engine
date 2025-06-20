@@ -27,6 +27,9 @@ qt_add_qml_module(appbattleship
     RESOURCES
     images/explosion.png
     images/x.png
+    QML_FILES HeatmapTile.qml
+    SOURCES heatmapcontroller.h heatmapcontroller.cpp
+    SOURCES BoardCalculations.cpp BoardCalculations.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -50,3 +53,5 @@ install(TARGETS appbattleship
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+set(CMAKE_CXX_FLAGS "-Ofast")

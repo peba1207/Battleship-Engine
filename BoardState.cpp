@@ -108,8 +108,12 @@ bool BoardState::validSpot(int x, int y, int shipSize, bool vert){
 
 }
 
-void BoardState::markShip(int x, int y, int size, BoardState* state, bool vert) {
+void BoardState::markAndRemoveShip(int x, int y, int size, BoardState* state, bool vert) {
     state->shipSizes.erase(find(state->shipSizes.begin(),state->shipSizes.end(),size));
+    markShip(x, y, size, state, vert);
+}
+
+void BoardState::markShip(int x, int y, int size, BoardState* state, bool vert) {
     int i = 0;
     int max = size;
     if(!vert) {
@@ -135,8 +139,6 @@ void BoardState::markShip(int x, int y, int size, BoardState* state, bool vert) 
             state->ships[y + k][x] = true;
         }
     }
-
-
 }
 
 string BoardState::toString() {

@@ -3,6 +3,8 @@
 //
 
 #include "BoardCalculations.h"
+#include <QDebug>
+#include <algorithm>
 double BoardCalculations::findEntropy(unsigned long long int shipCounts[SIZE][SIZE], unsigned long long int total){
     if(total == 0){return -1;}
     double entropy = 0;
@@ -99,6 +101,10 @@ unsigned long long int BoardCalculations::getAllBoards(BoardState* state, unsign
         }
     }
     auto* stateCopy = new BoardState(state, state->shipSizes);
+    removeSunkenShips(stateCopy);
+    for(int size : stateCopy->shipSizes){
+        qDebug() << size << " ";
+    }
     getAllBoardsHelper(stateCopy, shipCounts, 0, 0);
     //cout << endl;
     /*unsigned long long int max = 0;
@@ -158,7 +164,7 @@ void BoardCalculations::getAllBoardsHelper(BoardState* state,  unsigned long lon
                 if (state->validSpot(j, i, size, vert)) {
                     //call allboardshelper with new state
                     auto *newState = new BoardState(state, newList);
-                    BoardState::markShip(j, i, size, newState, vert);
+                    BoardState::markAndRemoveShip(j, i, size, newState, vert);
 
                     //
                     if (only) { getAllBoardsHelper(newState, shipCount, 0, 0); }
@@ -170,4 +176,91 @@ void BoardCalculations::getAllBoardsHelper(BoardState* state,  unsigned long lon
         thing = 0;
     }
     delete state;
+}
+
+void BoardCalculations::removeSunkenShips(BoardState *state)
+{
+    vector<int> shipSizes = {};
+    for(int i=0; i<SIZE; i++){
+        for(int j=0; j<SIZE; j++){
+            if(state->ships[i][j]){
+                int size = isSunkenShip(state, j, i);
+                if(size>0) shipSizes.push_back(size);
+            }
+        }
+    }
+
+    for(int size : shipSizes){
+        std::vector<int>::iterator position = std::find(state->shipSizes.begin(), state->shipSizes.end(), size);
+        if (position != state->shipSizes.end()) // == myVector.end() means the element was not found
+            state->shipSizes.erase(position);
+    }
+
+}
+
+int BoardCalculations::isSunkenShip(BoardState *state, int x, int y)
+{
+    if(!state->ships[y][x]) return 0;
+    for(int i = max(0,x-1); i<=min(SIZE-1,x+1); i++){
+        for(int j = max(0,y-1); j<=min(SIZE-1,y+1); j++){
+            //only check tiles above and to the left of (x,y)
+            if(!(i>=x && j>=y)){
+                //only accept revealed empty tiles
+                if(state->ships[j][i] || !state->revealed[j][i]){
+                    return 0;
+                }
+            }
+        }
+    }
+
+    //check horizontal length
+    int shipSize = 1;
+    int i = x+1;
+    for(;i<SIZE && state->ships[y][i]; i++){
+        for(int j = max(0,y-1); j<=min(SIZE-1,y+1); j++){
+            if(!state->revealed[j][i]) return 0; //reject if tiles aren't revealed
+            if(j==y){
+                if(state->ships[j][i]){
+                    shipSize++;
+                }
+            }else{
+                if(state->ships[j][i]){
+                    return 0; //reject if tiles aren't in a line
+                }
+            }
+        }
+    }
+    if(i<SIZE){
+        for(int j = max(0,y-1); j<=min(SIZE-1,y+1); j++){
+            if(!state->revealed[j][i]) return 0;
+        }
+    }
+    if (shipSize>1){
+        //make sure no ships are below
+        if(y+1<SIZE && state->ships[y+1][x]) return 0;
+        return shipSize;
+    }
+
+    //do the same with vertical
+    i = y+1;
+    for(;i<SIZE && state->ships[i][x]; i++){
+        for(int j = max(0,x-1); j<=min(SIZE-1,x+1); j++){
+            if(!state->revealed[i][j]) return 0; //reject if tiles aren't revealed
+            if(j==x){
+                if(state->ships[i][j]){
+                    shipSize++;
+                }
+            }else{
+                if(state->ships[i][j]){
+                    return 0; //reject if tiles aren't in a line
+                }
+            }
+        }
+    }
+    if(i<SIZE){
+        for(int j = max(0,x-1); j<=min(SIZE-1,x+1); j++){
+            if(!state->revealed[i][j]) return 0;
+        }
+    }
+    return shipSize;
 }

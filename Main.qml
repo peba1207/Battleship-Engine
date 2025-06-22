@@ -74,18 +74,22 @@ Window {
                 }
                 ControlButton{
                     Layout.fillWidth: true
-                    text: "hit"
+                    text: "Hit"
                     onClicked: StateController.setHit(GameGridController.selectedRow, GameGridController.selectedCol)
                 }
                 ControlButton{
                     Layout.fillWidth: true
-                    text: "miss"
+                    text: "Miss"
                     onClicked: StateController.setEmpty(GameGridController.selectedRow, GameGridController.selectedCol)
                 }
-
                 ControlButton{
                     Layout.fillWidth: true
-                    text: "clear"
+                    text: "Sink"
+                    onClicked: StateController.sinkShip(GameGridController.selectedRow, GameGridController.selectedCol)
+                }
+                ControlButton{
+                    Layout.fillWidth: true
+                    text: "Clear"
                     onClicked: StateController.clearTile(GameGridController.selectedRow, GameGridController.selectedCol)
                 }
             }

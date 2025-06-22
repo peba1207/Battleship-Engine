@@ -27,6 +27,7 @@ public:
 
 
     void setRevealed(int x, int y);
+    static void markAndRemoveShip(int x, int y, int size, BoardState *state, bool vert);
     static void markShip(int x, int y, int size, BoardState *state, bool vert);
 
     void setHit(int x, int y);

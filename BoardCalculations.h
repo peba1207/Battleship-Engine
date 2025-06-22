@@ -24,6 +24,10 @@ public:
     static unsigned long long int getAllBoards(BoardState* state, unsigned long long int shipCounts[SIZE][SIZE]);
 private:
     static void getAllBoardsHelper(BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
+
+    static void removeSunkenShips(BoardState* state);
+
+    static int isSunkenShip(BoardState *state, int x, int y);
 };
 
 #endif //BATTLESHIP_BOARDCALCULATIONS_H

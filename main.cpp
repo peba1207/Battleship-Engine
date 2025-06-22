@@ -3,6 +3,7 @@
 #include "gamegridcontroller.h"
 #include "statecontroller.h"
 #include "heatmapcontroller.h"
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);

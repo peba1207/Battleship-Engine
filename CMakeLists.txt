@@ -30,6 +30,7 @@ qt_add_qml_module(appbattleship
     QML_FILES HeatmapTile.qml
     SOURCES heatmapcontroller.h heatmapcontroller.cpp
     SOURCES BoardCalculations.cpp BoardCalculations.h
+    SOURCES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

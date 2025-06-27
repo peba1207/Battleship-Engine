@@ -9,20 +9,20 @@
 
 class BoardCalculations {
 public:
-    static double findEntropy(unsigned long long int shipCounts[SIZE][SIZE], unsigned long long int total);
-
-    static double findExpectedEntropy(int x, int y, BoardState *state, double pHit);
-
-    static double findEntropyOfMiss(int x, int y, BoardState *state);
-
-    static double findEntropyOfEachTile(BoardState *state, double entropyDistribution[SIZE][SIZE]);
-
     static void printDistribution(double distribution[SIZE][SIZE]);
 
     static void printDistribution(unsigned long long int (*distribution)[SIZE]);
 
     static unsigned long long int getAllBoards(BoardState* state, unsigned long long int shipCounts[SIZE][SIZE]);
+
+    static void getExpectedEntropy(BoardState* state, double informationDistribution[SIZE][SIZE]);
+
 private:
+
+    static double findEntropy(unsigned long long int shipCounts[SIZE][SIZE], unsigned long long int total);
+
+    static void getExpectedEntropyHelper(BoardState *state, unsigned long long shipCountsHit[SIZE][SIZE][SIZE][SIZE], int startX, int startY);
+
     static void getAllBoardsHelper(BoardState* state,  unsigned long long int shipCount[SIZE][SIZE], int startX, int startY);
 
     static void removeSunkenShips(BoardState* state);

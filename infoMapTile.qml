@@ -1,7 +1,7 @@
 import QtQuick
 import cpp.GameGridController
 import cpp.StateController
-import cpp.HeatmapController
+import cpp.InformationMapController
 
 Item{
     id: root
@@ -12,17 +12,17 @@ Item{
     width: size
     height: size
     Connections{
-        target: HeatmapController
+        target: InformationMapController
         function onUpdatedMap(){
             if(GameGridController.isHit(rowNum, colNum) || GameGridController.isMiss(rowNum, colNum)){
-                baseColor = Qt.darker("darkgray")   
+                baseColor = Qt.darker("darkgray")
                 img.visible = false
                 txt.text = ""
             }
             else {
-                baseColor = HeatmapController.tileColor(rowNum, colNum)
-                img.visible = HeatmapController.isBestMove(rowNum,colNum)
-                txt.text = HeatmapController.getProb(rowNum,colNum)
+                baseColor = InformationMapController.tileColor(rowNum, colNum)
+                img.visible = InformationMapController.isBestMove(rowNum,colNum)
+                txt.text = InformationMapController.getExpectedInfoGain(rowNum,colNum)
             }
         }
     }

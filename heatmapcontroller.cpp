@@ -1,9 +1,6 @@
 #include "heatmapcontroller.h"
 #include "BoardCalculations.h"
-#include <sstream>
-#include <iostream>
-#include <unistd.h>
-#include <QDebug>
+
 using namespace std;
 HeatmapController::HeatmapController(QObject *parent, BoardState* state)
     : QObject{parent}
@@ -26,6 +23,7 @@ HeatmapController::HeatmapController(QObject *parent, BoardState* state)
     connect(&workerThread, &HeatmapWorker::finishedCalculation, this, [this](){
         timer->stop();
         qDebug() << "woah";
+        getMax();
         emit updatedMap();
     });
 
@@ -35,8 +33,11 @@ HeatmapController::HeatmapController(QObject *parent, BoardState* state)
 
 QColor HeatmapController::tileColor(int row, int col)
 {
-    int brightness = 255-tileHeat[row][col]*255;
-    return QColor(brightness,brightness,255);
+    //int brightness = 255-tileHeat[row][col]*255;
+    int red = 230-(230*tileHeat[row][col]);
+    //int green = 230-(230*tileHeat[row][col]);
+    int blue = 255-((255-102)*tileHeat[row][col]);
+    return QColor(red,red,blue);
 }
 
 void HeatmapController::updateMap()
@@ -77,6 +78,28 @@ void HeatmapController::getIntermediateCalculations()
         }
     }
     emit updatedMap();
+}
+
+bool HeatmapController::isBestMove(int row, int col)
+{
+    return tileHeat[row][col]>=max-0.0001;
+}
+
+QString HeatmapController::getProb(int row, int col)
+{
+    return QString::number(tileHeat[row][col]*100,'f',1) + "%";
+}
+
+void HeatmapController::getMax()
+{
+    max = 0;
+    for(int i = 0; i<SIZE; i++){
+        for(int j = 0; j<SIZE; j++){
+            if(!state->revealed[i][j] && tileHeat[i][j]>max){
+                max = tileHeat[i][j];
+            }
+        }
+    }
 }
 
 

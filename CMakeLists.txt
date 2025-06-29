@@ -34,6 +34,7 @@ qt_add_qml_module(appbattleship
     SOURCES
     SOURCES informationmapcontroller.h informationmapcontroller.cpp
     QML_FILES InfoMapTile.qml
+    RESOURCES README.txt
 
 )
 

@@ -226,7 +226,7 @@ Window {
                 }
                 ControlButton{
                     Layout.fillWidth: true
-                    text: "Generate sHeatmap"
+                    text: "Generate Heatmap"
                     onClicked: InformationMapController.updateMap()
                 }
             }

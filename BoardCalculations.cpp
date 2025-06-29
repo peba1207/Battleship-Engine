@@ -284,9 +284,12 @@ void BoardCalculations::getExpectedEntropy(BoardState* state, double information
 
             entropyOfHitState = findEntropy(shipCounts[i][j], currentShipCounts[i][j]);
             entropyOfMissState = findEntropy(missCounts[i][j], total-currentShipCounts[i][j]);
-            qDebug() << pHit << " " << pMiss;
+
+            //entropyDistribution[i][j] = entropyOfMissState;
+            //qDebug() << entropyOfHitState << " " << entropyOfMissState;
 
             entropyDistribution[i][j] = pHit*entropyOfHitState + pMiss*entropyOfMissState;
+
         }
     }
 
@@ -306,7 +309,11 @@ double BoardCalculations::findEntropy(unsigned long long int shipCounts[SIZE][SI
     double entropy = 0;
     for(int i = 0; i<SIZE; i++){
         for(int j = 0; j<SIZE; j++){
-            if(shipCounts[i][j]) entropy+=((double)shipCounts[i][j]/(double)total) * log2((double)total/((double)shipCounts[i][j]));
+            if(shipCounts[i][j] && shipCounts[i][j]<total){
+                double p = (double)shipCounts[i][j]/(double)total;
+                double q = 1-p;
+                entropy+= -(p*log2(p) + q*log2(q));
+            }
         }
     }
     //cout<<entropy<<endl;
